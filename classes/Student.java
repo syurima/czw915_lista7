@@ -1,5 +1,7 @@
 package classes;
 
+import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -132,10 +134,16 @@ public class Student extends Osoba {
         else return null;
     }
     public static void wypiszStudentow(List<Osoba> ludzie){
-        //System.out.println("studenci: ");
+        JFrame frame = new JFrame("znalezieni studenci");
+        JTextArea textArea = new JTextArea();
+        frame.getContentPane().add(new JScrollPane(textArea), BorderLayout.CENTER);
+        frame.setSize(800,300);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setVisible(true);
         for(Osoba o : ludzie){
-            if(o instanceof Student) System.out.println(o.toString());
+            if(o instanceof Student) textArea.append(o.toString() + "\n");
         }
+
     }
 
 }

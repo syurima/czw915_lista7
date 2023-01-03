@@ -1,5 +1,7 @@
 package classes;
 
+import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -96,9 +98,14 @@ abstract public class PracownikUczelni extends Osoba{
         return output;
     }
     public static void wypiszPracowników(List<Osoba> ludzie){
-        //System.out.println("pracownicy: ");
+        JFrame frame = new JFrame("znalezieni pracownicy");
+        JTextArea textArea = new JTextArea();
+        frame.getContentPane().add(new JScrollPane(textArea), BorderLayout.CENTER);
+        frame.setSize(1000,300);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setVisible(true);
         for(Osoba o : ludzie){
-            if(o instanceof PracownikUczelni) System.out.println(o.toString());
+            if(o instanceof PracownikUczelni) textArea.append(o.toString() + "\n");
         }
     }
 }

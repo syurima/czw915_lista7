@@ -81,19 +81,6 @@ public class GUISearch implements ActionListener, ItemListener {
         card.show(cards, (String)event.getItem());
     }
     public void actionPerformed(ActionEvent event){
-        //JFrame frame = new JFrame();
-        //JPanel panel = new JPanel();
-        //JTextField input = new JTextField("type here!");
-        //frame.getContentPane().add(BorderLayout.CENTER,input);
-
-        //JButton enter = new JButton("enter");
-        //enter.addActionListener(this);
-        //frame.getContentPane().add(BorderLayout.SOUTH,enter);
-
-        //frame.setSize(300,100);
-        //frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        //frame.setVisible(true);
-
         switch (buttons.get(event.getSource())){
             case "ECTS":{
                 Kurs.wypiszKursy(Kurs.szukajECTS(system.getKursy(),Integer.parseInt(input.getText())));

@@ -3,6 +3,7 @@ package classes;
 import GUI.GUI;
 import comparators.*;
 
+import javax.swing.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
@@ -12,8 +13,8 @@ public class SystemAdministracji{
     protected Admin admin;
     protected String pathLudzie;
     protected String pathKursy;
-    protected List<Kurs> kursy;
-    protected List<Osoba> ludzie;
+    protected List<Kurs> kursy = new ArrayList<Kurs>();
+    protected List<Osoba> ludzie = new ArrayList<Osoba>();
     public SystemAdministracji(Admin admin, String pathLudzie, String pathKursy) {
         this.admin = admin;
         this.pathLudzie = pathLudzie;
@@ -21,14 +22,15 @@ public class SystemAdministracji{
     }
     public void main() {
         admin.observe(this);
-        kursy = wczytajKursyPlik(this.pathKursy);
-        ludzie = wczytajLudziPlik(kursy, this.pathLudzie);
+        wczytajKursyPlik();
+        wczytajLudziPlik();
+
+        GUI gui = new GUI();
+        gui.main(this);
 
         Scanner scanner = new Scanner(System.in);
         System.out.println("1. Dodaj");
         System.out.println("2. Usuń");
-        System.out.println("3. Wypisz");
-        System.out.println("4. Szukaj");
         switch (scanner.nextLine().charAt(0)){
             case '1':{
                 if (this.admin.op == true){
@@ -52,14 +54,6 @@ public class SystemAdministracji{
                 }
                 break;
             }
-            case '3':{
-                menuPrint();
-                break;
-            }
-            case '4':{
-                menuSearch();
-                break;
-            }
         }
         System.out.println("___ \n continue?");
         if (scanner.nextLine().charAt(0) == 'y') {
@@ -75,7 +69,7 @@ public class SystemAdministracji{
         System.out.println("4.Dodaj pracownika badawczo-dydaktycznego");
         char a = scanner.nextLine().charAt(0);
         if (a == '1'){
-            addKurs(kursy,ludzie);
+            //addKurs();
         }
         else if(Character.getNumericValue(a) < 5) {
             System.out.println("imię:");
@@ -90,15 +84,15 @@ public class SystemAdministracji{
             char plec = scanner.next().charAt(0);
             switch (a) {
                 case '2': {
-                    addStudent(kursy, ludzie, imie, nazwisko, pesel, wiek, plec);
+                    addStudent(imie, nazwisko, pesel, wiek, plec);
                     break;
                 }
                 case '3': {
-                    addPracownikAdmin(kursy, ludzie, imie, nazwisko, pesel, wiek, plec);
+                    addPracownikAdmin(imie, nazwisko, pesel, wiek, plec);
                     break;
                 }
                 case '4': {
-                    addPracownikBD(kursy, ludzie, imie, nazwisko, pesel, wiek, plec);
+                    addPracownikBD(imie, nazwisko, pesel, wiek, plec);
                     break;
                 }
             }
@@ -139,9 +133,9 @@ public class SystemAdministracji{
                     kursy.remove(k);
                 }
 
-                SystemAdministracji.wypiszKursyPlik(kursy, this.pathKursy);
-                ludzie = SystemAdministracji.wczytajLudziPlik(kursy, this.pathLudzie);
-                SystemAdministracji.wypiszLudziPlik(ludzie, this.pathLudzie);
+                wypiszKursyPlik();
+                wczytajLudziPlik();
+                wypiszLudziPlik();
                 break;
             }
             case '2': {
@@ -186,7 +180,7 @@ public class SystemAdministracji{
                 for (Osoba o : del){
                     ludzie.remove(o);
                 }
-                wypiszLudziPlik(ludzie,this.pathKursy);
+                wypiszLudziPlik();
                 break;
             }
             case '3': {
@@ -231,142 +225,7 @@ public class SystemAdministracji{
                 for (Osoba o : del){
                     ludzie.remove(o);
                 }
-                wypiszLudziPlik(ludzie, pathLudzie);
-                break;
-            }
-        }
-    }
-    public void menuPrint(){
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("1.Wypisz kursy");
-        System.out.println("2.Wypisz studentów");
-        System.out.println("3.Wypisz pracowników");
-        switch (scanner.nextLine().charAt(0)){
-            case '1':{
-                Kurs.wypiszKursy(kursy);
-                break;
-            }
-            case '2':{
-                Student.wypiszStudentow(ludzie);
-                break;
-            }
-            case '3':{
-                PracownikUczelni.wypiszPracowników(ludzie);
-                break;
-            }
-        }
-    }
-    public void menuSearch() {
-        Scanner scanner = new Scanner(System.in);
-
-        System.out.println("1.Szukaj kursu");
-        System.out.println("2.Szukaj studentów");
-        System.out.println("3.Szukaj pracowników");
-        switch (scanner.nextLine().charAt(0)) {
-            case '1': {
-                System.out.println("1.Szukaj wg nazwy");
-                System.out.println("2.Szukaj wg nazwiska prowadzącego");
-                System.out.println("3.Szukaj wg ECTS");
-                switch (scanner.nextLine().charAt(0)) {
-                    case '1': {
-                        System.out.println("podaj nazwę kursu");
-                        String nazwa = scanner.nextLine();
-                        Kurs.wypiszKursy(Kurs.szukajNazwa(kursy, nazwa));
-                        break;
-                    }
-                    case '2': {
-                        System.out.println("podaj nazwisko");
-                        String nazwisko = scanner.nextLine();
-                        Kurs.wypiszKursy(Kurs.szukajProwadzacy(kursy, (PracownikBD) PracownikUczelni.szukajNazwisko(ludzie, nazwisko).get(0)));
-                        break;
-                    }
-                    case '3': {
-                        System.out.println("podaj ects");
-                        int ects = scanner.nextInt();
-                        Kurs.wypiszKursy(Kurs.szukajECTS(kursy, ects));
-                        break;
-                    }
-                }
-                break;
-            }
-            case '2': {
-                System.out.println("1.Szukaj wg imienia");
-                System.out.println("2.Szukaj wg nazwiska");
-                System.out.println("3.Szukaj wg ID");
-                System.out.println("4.Szukaj wg roku studiów");
-                System.out.println("5.Szukaj wg nazwyy kursu");
-                switch (scanner.nextLine().charAt(0)) {
-                    case '1': {
-                        System.out.println("podaj imie");
-                        String imie = scanner.nextLine();
-                        Student.wypiszStudentow(Student.szukajImie(ludzie, imie));
-                        break;
-                    }
-                    case '2': {
-                        System.out.println("podaj nazwisko");
-                        String nazwisko = scanner.nextLine();
-                        Student.wypiszStudentow(Student.szukajNazwisko(ludzie, nazwisko));
-                        break;
-                    }
-                    case '3': {
-                        System.out.println("podaj ID");
-                        String ID = scanner.nextLine();
-                        Student.wypiszStudentow(Student.szukajID(ludzie, ID));
-                        break;
-                    }
-                    case '4': {
-                        System.out.println("podaj rok studiów");
-                        int rok = scanner.nextInt();
-                        Student.wypiszStudentow(Student.szukajRok(ludzie, rok));
-                        break;
-                    }
-                    case '5': {
-                        System.out.println("podaj kurs");
-                        String kurs = scanner.nextLine();
-                        Student.wypiszStudentow(Student.szukajKurs(ludzie,kursy, kurs));
-                        break;
-                    }
-                }
-                break;
-            }
-            case '3': {
-                System.out.println("1.Szukaj wg imienia");
-                System.out.println("2.Szukaj wg nazwiska");
-                System.out.println("3.Szukaj wg stanowiska");
-                System.out.println("4.Szukaj wg stazu");
-                System.out.println("5.Szukaj wg pensji");
-                switch (scanner.nextLine().charAt(0)) {
-                    case '1': {
-                        System.out.println("podaj imie");
-                        String imie = scanner.nextLine();
-                        PracownikUczelni.wypiszPracowników(PracownikUczelni.szukajImie(ludzie, imie));
-                        break;
-                    }
-                    case '2': {
-                        System.out.println("podaj nazwisko");
-                        String nazwisko = scanner.nextLine();
-                        PracownikUczelni.wypiszPracowników(PracownikUczelni.szukajNazwisko(ludzie, nazwisko));
-                        break;
-                    }
-                    case '3': {
-                        System.out.println("podaj stanowisko");
-                        String stanowisko = scanner.nextLine();
-                        PracownikUczelni.wypiszPracowników(PracownikUczelni.szukajStanowisko(ludzie, stanowisko));
-                        break;
-                    }
-                    case '4': {
-                        System.out.println("podaj staz");
-                        int rok = scanner.nextInt();
-                        PracownikUczelni.wypiszPracowników(PracownikUczelni.szukajStaz(ludzie, rok));
-                        break;
-                    }
-                    case '5': {
-                        System.out.println("podaj pensje");
-                        int pensja = scanner.nextInt();
-                        PracownikUczelni.wypiszPracowników(PracownikUczelni.szukajPensja(ludzie,pensja));
-                        break;
-                    }
-                }
+                wypiszLudziPlik();
                 break;
             }
         }
@@ -392,7 +251,7 @@ public class SystemAdministracji{
         }
         admin.update();
     }
-    public void addStudent(List<Kurs> kursy, List<Osoba> ludzie, String imie, String nazwisko, String pesel, int wiek, char plec){
+    public void addStudent(String imie, String nazwisko, String pesel, int wiek, char plec){
         Scanner scanner = new Scanner(System.in);
         System.out.println("nr. Indeksu: ");
         String ID = scanner.nextLine();
@@ -418,7 +277,7 @@ public class SystemAdministracji{
         }
         ludzie.add(s);
     }
-    public void addPracownikAdmin(List<Kurs> kursy, List<Osoba> ludzie, String imie, String nazwisko, String pesel, int wiek, char plec){
+    public void addPracownikAdmin(String imie, String nazwisko, String pesel, int wiek, char plec){
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("Stanowisko:");
@@ -453,7 +312,7 @@ public class SystemAdministracji{
 
         ludzie.add(o);
     }
-    public void addPracownikBD(List<Kurs> kursy, List<Osoba> ludzie, String imie, String nazwisko, String pesel, int wiek, char plec){
+    public void addPracownikBD(String imie, String nazwisko, String pesel, int wiek, char plec){
         Scanner scanner = new Scanner(System.in);
         System.out.println("Stanowisko:");
         String stanowisko = "";
@@ -497,23 +356,20 @@ public class SystemAdministracji{
 
         ludzie.add(o);
     }
-    public void addKurs(List<Kurs> kursy, List<Osoba> ludzie){
+    public void addKurs(HashMap<String, JTextField> polaKurs){
         Scanner scanner = new Scanner(System.in);
-        System.out.println("nazwa:");
-        String nazwa = scanner.nextLine();
-        System.out.println("nazwisko prowadzącego:");
-        String nazwisko = scanner.nextLine();
-        while(PracownikUczelni.szukajNazwisko(ludzie,nazwisko).size()==0){
+        String nazwisko = polaKurs.get("prowadzący").getText();
+        if(PracownikUczelni.szukajNazwisko(ludzie,nazwisko).size()==0){
             System.out.println("nie znaleziono prowadzącego, spróbuj ponownie");
-            nazwisko = scanner.nextLine();
         }
-        PracownikBD prowadzacy = (PracownikBD) PracownikUczelni.szukajNazwisko(ludzie,nazwisko).get(0);
-        System.out.println("ECTS:");
-        int ECTS = scanner.nextInt();
-        kursy.add(new Kurs(nazwa,prowadzacy,ECTS));
+        else {
+            String nazwa = polaKurs.get("nazwa").getText();
+            PracownikBD prowadzacy = (PracownikBD) PracownikUczelni.szukajNazwisko(ludzie, nazwisko).get(0);
+            int ECTS = Integer.parseInt(polaKurs.get("ECTS").getText());
+            kursy.add(new Kurs(nazwa, prowadzacy, ECTS));
+        }
     }
-    public static List<Osoba> wczytajLudziPlik(List<Kurs> kursy, String pathLudzie){
-        List<Osoba> ludzie = new ArrayList<Osoba>();
+    public void wczytajLudziPlik(){
         File input = new File(pathLudzie);
         try {
             Scanner scanner = new Scanner(input);
@@ -529,29 +385,27 @@ public class SystemAdministracji{
                         for (String nazwa : listaKursow) {
                             if (Kurs.szukajNazwa(kursy,nazwa).size()!=0) student.addKurs(Kurs.szukajNazwa(kursy,nazwa).get(0));
                         }
-                        ludzie.add(student);
+                        this.ludzie.add(student);
                         break;
                     }
                     case 'A':{
                         //twórz admin
                         PracownikAdmin admin = new PracownikAdmin(line[1], line[2], line[3], Integer.parseInt(line[4]), line[5].charAt(0), line[6], Integer.parseInt(line[7]), Integer.parseInt(line[8]), Integer.parseInt(line[9]),Integer.parseInt(line[10]));
-                        ludzie.add(admin);
+                        this.ludzie.add(admin);
                         break;
                     }
                     case 'D':{
                         //twórz pracownik BD
                         PracownikBD bd = new PracownikBD(line[1], line[2], line[3], Integer.parseInt(line[4]), line[5].charAt(0), line[6], Integer.parseInt(line[7]), Integer.parseInt(line[8]), Integer.parseInt(line[9]),Integer.parseInt(line[10]));
-                        ludzie.add(bd);
+                        this.ludzie.add(bd);
                         break;
                     }
                 }
             }
             scanner.close();
         } catch (FileNotFoundException e){ System.out.println("nie można wczytać pliku");}
-
-        return ludzie;
     }
-    public static void wypiszLudziPlik(List<Osoba> ludzie, String pathLudzie){
+    public void wypiszLudziPlik(){
         File output = new File(pathLudzie);
         try {
             PrintWriter printWriter = new PrintWriter(output);
@@ -562,8 +416,7 @@ public class SystemAdministracji{
             System.out.println("nie można utworzyć pliku");
         }
     }
-    public static List<Kurs> wczytajKursyPlik(String pathKursy){
-        List<Kurs> kursy = new ArrayList<Kurs>();
+    public void wczytajKursyPlik(){
         File input = new File(pathKursy);
         try {
             Scanner scanner = new Scanner(input);
@@ -573,14 +426,13 @@ public class SystemAdministracji{
                 //twórz prowadzącego
                 PracownikBD prowadzący = new PracownikBD(line[2], line[3], line[4], Integer.parseInt(line[5]), line[6].charAt(0), line[7], Integer.parseInt(line[8]), Integer.parseInt(line[9]), Integer.parseInt(line[10]),Integer.parseInt(line[11]));
                 Kurs kurs = new Kurs(line[0], prowadzący, Integer.parseInt(line[12]));
-                kursy.add(kurs);
+                this.kursy.add(kurs);
             }
             scanner.close();
         }
         catch (FileNotFoundException e){ System.out.println("nie można wczytać pliku");}
-        return kursy;
     }
-    public static void wypiszKursyPlik(List<Kurs> kursy, String pathKursy){
+    public void wypiszKursyPlik(){
         File output = new File(pathKursy);
         try {
             PrintWriter printWriter = new PrintWriter(output);

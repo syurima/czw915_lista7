@@ -10,7 +10,7 @@ import java.util.HashMap;
 
 public class GUI implements ActionListener {
     static SystemAdministracji system;
-    static JFrame frame = new JFrame();
+    static JFrame frame = new JFrame("co chcesz zrobić?");
     static HashMap<JButton, String> buttons = new HashMap<JButton, String>();
     public void main(SystemAdministracji system) {
         this.system = system;
@@ -25,13 +25,12 @@ public class GUI implements ActionListener {
             B.addActionListener(this);
             menu.add(B);
         }
-        frame.setSize(500,300);
-        frame.getContentPane().add(BorderLayout.CENTER,menu);
+        frame.setSize(400,80);
+        frame.add(menu, BorderLayout.CENTER);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
     }
     public void actionPerformed(ActionEvent event){
-        System.out.println("mm");
         switch (buttons.get(event.getSource())){
             case "add":{
                 GUIAdd guiAdd = new GUIAdd();

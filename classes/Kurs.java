@@ -1,5 +1,7 @@
 package classes;
 
+import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -70,9 +72,14 @@ public class Kurs{
         return output;
     }
     public static void wypiszKursy(List<Kurs> kursy){
-        //System.out.println("kursy: ");
+        JFrame frame = new JFrame("znalezione kursy");
+        JTextArea textArea = new JTextArea();
+        frame.getContentPane().add(new JScrollPane(textArea), BorderLayout.CENTER);
+        frame.setSize(400,300);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setVisible(true);
         for(Kurs k : kursy){
-            System.out.println(k.toString());;
+            textArea.append(k.toString() + "\n");;
         }
     }
 

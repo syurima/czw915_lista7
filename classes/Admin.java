@@ -14,8 +14,8 @@ public class Admin {
         this.system = system;
     }
     public void update() {
-        SystemAdministracji.wypiszLudziPlik(system.ludzie, system.pathLudzie);
-        SystemAdministracji.wypiszKursyPlik(system.kursy, system.pathKursy);
+        system.wypiszLudziPlik();
+        system.wypiszKursyPlik();
         System.out.println("dane zapisane");
 
     }
