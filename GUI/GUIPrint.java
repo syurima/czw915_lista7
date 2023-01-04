@@ -15,11 +15,12 @@ import java.util.HashMap;
 
 public class GUIPrint implements ActionListener{
     SystemAdministracji system;
-    static JFrame frame = new JFrame();
-    static HashMap<JButton, String> buttons = new HashMap<JButton, String>();
+    static HashMap<JButton, String> buttons;
     public void main(SystemAdministracji system){
+        JFrame frame = new JFrame();
         this.system = system;
         JPanel panel = new JPanel();
+        buttons = new HashMap<JButton, String>();
         buttons.put(new JButton("wypisz studentów"),"student");
         buttons.put(new JButton("wypisz pracowników"),"pracownik");
         buttons.put(new JButton("wypisz kursy"),"kurs");
@@ -28,7 +29,7 @@ public class GUIPrint implements ActionListener{
             panel.add(B);
         }
         frame.add(panel, BorderLayout.CENTER);
-        frame.setSize(500,300);
+        frame.setSize(500,100);
         frame.setVisible(true);
     }
     public void actionPerformed(ActionEvent event){

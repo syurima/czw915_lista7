@@ -49,25 +49,27 @@ public class Kurs{
     public String serialize() {
         return ( String.format("%s/%s/%d",nazwa,prowadzacy.serialize(),punktyECTS));
     }
-
-    public static List<Kurs> szukajNazwa(List<Kurs> kursy, String nazwa){
-        List<Kurs> output = new ArrayList<Kurs>();
-        for(Kurs k : kursy){
-            if(k.getNazwa().equals(nazwa)) output.add(k);
-        }
-        return output;
-    }
-    public static List<Kurs> szukajProwadzacy(List<Kurs> kursy, PracownikBD o){
-        List<Kurs> output = new ArrayList<Kurs>();
-        for(Kurs k : kursy){
-            if(k.getProwadzacy().equals(o)) output.add(k);
-        }
-        return output;
-    }
-    public static List<Kurs> szukajECTS(List<Kurs> kursy, int ECTS){
-        List<Kurs> output = new ArrayList<Kurs>();
-        for(Kurs k : kursy){
-            if(k.getPunktyECTS() == ECTS) output.add(k);
+    public static ArrayList<Kurs> find(ArrayList<Kurs> kursy, String key, String szukane){
+        ArrayList<Kurs> output = new ArrayList<Kurs>();
+        switch (key) {
+            case "name": {
+                for(Kurs k : kursy){
+                    if(k.getNazwa().equals(szukane)) output.add(k);
+                }
+                break;
+            }
+            case "ECTS": {
+                for(Kurs k : kursy){
+                    if(k.getPunktyECTS() == Integer.parseInt(szukane)) output.add(k);
+                }
+                break;
+            }
+            case "teacher": {
+                for(Kurs k : kursy){
+                    if(k.getProwadzacy().getNazwisko().equals(szukane)) output.add(k);
+                }
+                break;
+            }
         }
         return output;
     }

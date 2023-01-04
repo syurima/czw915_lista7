@@ -8,16 +8,18 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class GUISearch implements ActionListener, ItemListener {
     SystemAdministracji system;
-    static JFrame frame = new JFrame();
     static JPanel cards = new JPanel(new CardLayout());
+    static JCheckBox del = new JCheckBox("usuń");
     static HashMap<JButton, String> buttons = new HashMap<JButton, String>();
     static JTextField input = new JTextField("type here!");
     public void main(SystemAdministracji system){
         this.system = system;
+        JFrame frame = new JFrame();
         //wybór co sortować
         JPanel panelChoice = new JPanel();
         JComboBox comboBox = new JComboBox(new String[]{"szukaj kursu", "szukaj studenta", "szukaj pracownika"});
@@ -67,12 +69,14 @@ public class GUISearch implements ActionListener, ItemListener {
             panelPracownik.add(B);
         }
         buttons.putAll(buttonsPracownik);
-
+        JPanel panelconstant = new JPanel();
+        panelconstant.add(input, BorderLayout.EAST);
+        panelconstant.add(del, BorderLayout.AFTER_LAST_LINE);
         //frame
         frame.add(panelChoice, BorderLayout.PAGE_START);
         frame.add(cards, BorderLayout.CENTER);
-        frame.getContentPane().add(BorderLayout.SOUTH,input);
-        frame.setSize(500,300);
+        frame.add(panelconstant, BorderLayout.SOUTH);
+        frame.setSize(500,150);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setVisible(true);
     }
@@ -81,59 +85,85 @@ public class GUISearch implements ActionListener, ItemListener {
         card.show(cards, (String)event.getItem());
     }
     public void actionPerformed(ActionEvent event){
+        ArrayList<Kurs> foundCourses = new ArrayList<Kurs>();
+        ArrayList<Osoba> foundPeople = new ArrayList<Osoba>();
+
         switch (buttons.get(event.getSource())){
             case "ECTS":{
-                Kurs.wypiszKursy(Kurs.szukajECTS(system.getKursy(),Integer.parseInt(input.getText())));
+                foundCourses = Kurs.find(system.getKursy(),"ECTS", input.getText());
+                Kurs.wypiszKursy(foundCourses);
                 break;
             }
             case "prowadzący":{
-                Kurs.wypiszKursy(Kurs.szukajProwadzacy(system.getKursy(),(PracownikBD)PracownikUczelni.szukajNazwisko(system.getLudzie(), input.getText()).get(0)));
+                foundCourses = Kurs.find(system.getKursy(),"teacher", input.getText());
+                Kurs.wypiszKursy(foundCourses);
                 break;
             }
             case "nazwa":{
-                Kurs.wypiszKursy(Kurs.szukajNazwa(system.getKursy(),input.getText()));
+                foundCourses = Kurs.find(system.getKursy(),"name", input.getText());
+                Kurs.wypiszKursy(foundCourses);
                 break;
             }
             case "studentNazwisko":{
-                Student.wypiszStudentow(Student.szukajNazwisko(system.getLudzie(), input.getText()));
+                foundPeople = Student.find(system.getLudzie(), system.getKursy(), "surname", input.getText());
+                Student.wypiszStudentow(foundPeople);
                 break;
             }
             case "studentImię":{
-                Student.wypiszStudentow(Student.szukajImie(system.getLudzie(), input.getText()));
+                foundPeople = Student.find(system.getLudzie(), system.getKursy(),"name", input.getText());
+                Student.wypiszStudentow(foundPeople);
                 break;
             }
             case "ID":{
-                Student.wypiszStudentow(Student.szukajID(system.getLudzie(), input.getText()));
+                foundPeople = Student.find(system.getLudzie(), system.getKursy(), "ID", input.getText());
+                Student.wypiszStudentow(foundPeople);
                 break;
             }
             case "rok":{
-                Student.wypiszStudentow(Student.szukajRok(system.getLudzie(), Integer.parseInt(input.getText())));
+                foundPeople = Student.find(system.getLudzie(), system.getKursy(), "year", input.getText());
+                Student.wypiszStudentow(foundPeople);
                 break;
             }
             case "kurs":{
-                Student.wypiszStudentow(Student.szukajKurs(system.getLudzie(),system.getKursy(), input.getText()));
+                foundPeople = Student.find(system.getLudzie(), system.getKursy(), "course", input.getText());
+                Student.wypiszStudentow(foundPeople);
                 break;
             }
             case "pracNazwisko":{
-                PracownikUczelni.wypiszPracowników(PracownikUczelni.szukajNazwisko(system.getLudzie(), input.getText()));
+                foundPeople = PracownikUczelni.find(system.getLudzie(), "surname", input.getText());
+                PracownikUczelni.wypiszPracowników(foundPeople);
                 break;
             }
             case "pracImię":{
-                PracownikUczelni.wypiszPracowników(PracownikUczelni.szukajImie(system.getLudzie(), input.getText()));
+                foundPeople = PracownikUczelni.find(system.getLudzie(),"name", input.getText());
+                PracownikUczelni.wypiszPracowników(foundPeople);
                 break;
             }
             case "stanowisko":{
-                PracownikUczelni.wypiszPracowników(PracownikUczelni.szukajStanowisko(system.getLudzie(), input.getText()));
+                foundPeople = PracownikUczelni.find(system.getLudzie(),"job",  input.getText());
+                PracownikUczelni.wypiszPracowników(foundPeople);
                 break;
             }
             case "staz":{
-                PracownikUczelni.wypiszPracowników(PracownikUczelni.szukajStaz(system.getLudzie(), Integer.parseInt(input.getText())));
+                foundPeople = PracownikUczelni.find(system.getLudzie(), "year", input.getText());
+                PracownikUczelni.wypiszPracowników(foundPeople);
                 break;
             }
             case "pensja":{
-                PracownikUczelni.wypiszPracowników(PracownikUczelni.szukajPensja(system.getLudzie(), Integer.parseInt(input.getText())));
+                foundPeople = PracownikUczelni.find(system.getLudzie(), "salary", input.getText());
+                PracownikUczelni.wypiszPracowników(foundPeople);
                 break;
             }
+        }
+        if (del.isSelected()){
+            for (Kurs k : foundCourses){
+                system.getKursy().remove(k);
+            }
+            for (Osoba o : foundPeople){
+                system.getLudzie().remove(o);
+            }
+            system.getAdmin().update();
+            system.notifyAdmins();
         }
     }
 }

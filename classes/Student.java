@@ -93,45 +93,46 @@ public class Student extends Osoba {
         }
         return ("S/" +  super.serialize() + String.format("/%s/%d/%s/%s/%s/%s",nrIndeksu,rokStudiow,erasmus,stopien1,stacjonarny,a));
     }
-    public static List<Osoba> szukajNazwisko(List<Osoba> ludzie, String nazwisko){
-        List<Osoba> output = new ArrayList<Osoba>();
-        for(Osoba o : ludzie){
-            if(o instanceof Student && o.getNazwisko().equals(nazwisko)) output.add(o);
-        }
-        return output;
-    }
-    public static List<Osoba> szukajImie(List<Osoba> ludzie, String imie){
-        List<Osoba> output = new ArrayList<Osoba>();
-        for(Osoba o : ludzie){
-            if(o instanceof Student && o.getImie().equals(imie)) output.add(o);
-        }
-        return output;
-    }
-    public static List<Osoba> szukajID(List<Osoba> ludzie, String indeks){
-        List<Osoba> output = new ArrayList<Osoba>();
-        int found = 0;
-        for(Osoba o : ludzie){
-            if(o instanceof Student && ((Student) o).getNrIndeksu().equals(indeks)) output.add(o);
-        }
-        return output;
-    }
-    public static List<Osoba> szukajRok(List<Osoba> ludzie, int rok){
-        List<Osoba> output = new ArrayList<Osoba>();
-        for(Osoba o : ludzie){
-            if(o instanceof Student && ((Student) o).getRokStudiow()==rok) output.add(o);
-        }
-        return output;
-    }
-    public static List<Osoba> szukajKurs(List<Osoba> ludzie, List<Kurs>kursy, String nazwa){
-        List<Osoba> output = new ArrayList<Osoba>();
-        if (Kurs.szukajNazwa(kursy, nazwa).size()>0) {
-            Kurs kurs = Kurs.szukajNazwa(kursy, nazwa).get(0);
-            for(Osoba o : ludzie){
-                if(o instanceof Student && ((Student) o).getKursy().contains(kurs)) output.add(o);
+
+    public static ArrayList<Osoba> find(ArrayList<Osoba> ludzie, ArrayList<Kurs>kursy, String key, String szukane){
+        ArrayList<Osoba> output = new ArrayList<Osoba>();
+        switch (key) {
+            case "surname": {
+                for (Osoba o : ludzie) {
+                    if (o instanceof Student && o.getNazwisko().equals(szukane)) output.add(o);
+                }
+                break;
             }
-            return output;
+            case "name": {
+                for(Osoba o : ludzie){
+                    if(o instanceof Student && o.getImie().equals(szukane)) output.add(o);
+                }
+                break;
+            }
+            case "ID": {
+                for(Osoba o : ludzie){
+                    if(o instanceof Student && ((Student) o).getNrIndeksu().equals(szukane)) output.add(o);
+                }
+                break;
+            }
+            case "year": {
+                for(Osoba o : ludzie){
+                    if(o instanceof Student && ((Student) o).getRokStudiow()==Integer.parseInt(szukane)) output.add(o);
+                }
+                break;
+            }
+            case "course": {
+                if (Kurs.find(kursy,"name", szukane).size()>0) {
+                    Kurs kurs = Kurs.find(kursy,"name", szukane).get(0);
+                    for(Osoba o : ludzie){
+                        if(o instanceof Student && ((Student) o).getKursy().contains(kurs)) output.add(o);
+                    }
+                    return output;
+                }
+                else return null;
+            }
         }
-        else return null;
+        return output;
     }
     public static void wypiszStudentow(List<Osoba> ludzie){
         JFrame frame = new JFrame("znalezieni studenci");

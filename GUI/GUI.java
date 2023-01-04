@@ -16,7 +16,6 @@ public class GUI implements ActionListener {
         this.system = system;
 
         buttons.put(new JButton("dodaj"),"add");
-        buttons.put(new JButton("usuń"),"del");
         buttons.put(new JButton("wypisz"),"print");
         buttons.put(new JButton("szukaj"),"search");
         buttons.put(new JButton("sort"),"sort");
@@ -35,11 +34,6 @@ public class GUI implements ActionListener {
             case "add":{
                 GUIAdd guiAdd = new GUIAdd();
                 guiAdd.main(system);
-                break;
-            }
-            case "del":{
-                GUIDel guiDel = new GUIDel();
-                guiDel.main(system);
                 break;
             }
             case "search":{

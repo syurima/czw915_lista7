@@ -13,8 +13,8 @@ public class SystemAdministracji{
     protected Admin admin;
     protected String pathLudzie;
     protected String pathKursy;
-    protected List<Kurs> kursy = new ArrayList<Kurs>();
-    protected List<Osoba> ludzie = new ArrayList<Osoba>();
+    protected ArrayList<Kurs> kursy = new ArrayList<Kurs>();
+    protected ArrayList<Osoba> ludzie = new ArrayList<Osoba>();
     public SystemAdministracji(Admin admin, String pathLudzie, String pathKursy) {
         this.admin = admin;
         this.pathLudzie = pathLudzie;
@@ -27,77 +27,8 @@ public class SystemAdministracji{
 
         GUI gui = new GUI();
         gui.main(this);
-
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("1. Dodaj");
-        System.out.println("2. Usuń");
-        switch (scanner.nextLine().charAt(0)){
-            case '1':{
-                if (this.admin.op == true){
-                    menuAdd();
-                    admin.update();
-                    notifyAdmins();
-                }
-                else{
-                    System.out.println("brak dostępu");
-                }
-                break;
-            }
-            case '2':{
-                if (this.admin.op == true){
-                    menuDel();
-                    admin.update();
-                    notifyAdmins();
-                }
-                else{
-                    System.out.println("brak dostępu");
-                }
-                break;
-            }
-        }
-        System.out.println("___ \n continue?");
-        if (scanner.nextLine().charAt(0) == 'y') {
-            System.out.println("___");
-            main();
-        }
     }
-    public void menuAdd(){
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("1.Dodaj kurs");
-        System.out.println("2.Dodaj studenta");
-        System.out.println("3.Dodaj pracownika administracji");
-        System.out.println("4.Dodaj pracownika badawczo-dydaktycznego");
-        char a = scanner.nextLine().charAt(0);
-        if (a == '1'){
-            //addKurs();
-        }
-        else if(Character.getNumericValue(a) < 5) {
-            System.out.println("imię:");
-            String imie = scanner.nextLine();
-            System.out.println("nazwisko:");
-            String nazwisko = scanner.nextLine();
-            System.out.println("pesel:");
-            String pesel = scanner.nextLine();
-            System.out.println("wiek:");
-            int wiek = scanner.nextInt();
-            System.out.println("płeć:");
-            char plec = scanner.next().charAt(0);
-            switch (a) {
-                case '2': {
-                    addStudent(imie, nazwisko, pesel, wiek, plec);
-                    break;
-                }
-                case '3': {
-                    addPracownikAdmin(imie, nazwisko, pesel, wiek, plec);
-                    break;
-                }
-                case '4': {
-                    addPracownikBD(imie, nazwisko, pesel, wiek, plec);
-                    break;
-                }
-            }
-        }
-    }
+    /*
     public void menuDel(){
         Scanner scanner = new Scanner(System.in);
         System.out.println("1.Usuń kurs");
@@ -230,9 +161,10 @@ public class SystemAdministracji{
             }
         }
     }
+
+     */
     public void sortujKursy() {
         Collections.sort(kursy,new CompareECTS().thenComparing(new CompareProwadzacy()));
-        admin.update();
     }
     public void sortujLudzi(String klucz) {
         switch (klucz){
@@ -249,122 +181,74 @@ public class SystemAdministracji{
                 break;
             }
         }
-        admin.update();
     }
-    public void addStudent(String imie, String nazwisko, String pesel, int wiek, char plec){
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("nr. Indeksu: ");
-        String ID = scanner.nextLine();
-        System.out.println("rok studiów: ");
-        int rok = scanner.nextInt();
-        System.out.println("erasmus?");
-        boolean erasmus = (scanner.next().charAt(0)=='y');
-        System.out.println("I stopień?");
-        boolean stopien1 = (scanner.next().charAt(0)=='y');
-        System.out.println("stacjonarne?");
-        boolean stacja = (scanner.next().charAt(0)=='y');
-        Student s = new Student(imie, nazwisko, pesel, wiek, plec, ID, rok, erasmus, stopien1, stacja);
-        System.out.println("czy chcesz dodać kurs?");
-        while (scanner.next().charAt(0)=='y'){
-            System.out.println("podaj nazwę kursu");
-            String nazwaKursu = scanner.nextLine();
-            while(Kurs.szukajNazwa(kursy,nazwaKursu).size()==0){
-                System.out.println("nie znaleziono kursu, spróbuj ponownie");
-                nazwaKursu = scanner.nextLine();
-            }
-            s.addKurs(Kurs.szukajNazwa(kursy,nazwaKursu).get(0));
-            System.out.println("czy chcesz dodać kurs?");
-        }
-        ludzie.add(s);
-    }
-    public void addPracownikAdmin(String imie, String nazwisko, String pesel, int wiek, char plec){
-        Scanner scanner = new Scanner(System.in);
-
-        System.out.println("Stanowisko:");
-        String stanowisko = "";
-        System.out.println("1.Referent");
-        System.out.println("2.Specjalista");
-        System.out.println("3.Starszy Specjalista");
-        switch (scanner.nextLine().charAt(0)) {
-            case '1': {
-                stanowisko = "Referent";
-                break;
-            }
-            case '2': {
-                stanowisko = "Specjalista";
-                break;
-            }
-            case '3': {
-                stanowisko = "Starszy Specjalista";
-                break;
+    public void addStudent(HashMap<String, JTextField> polaStudent, HashMap<String, JCheckBox> checksStudent, JTextField coursenames){
+        String imie = polaStudent.get("imie").getText();
+        String nazwisko = polaStudent.get("nazwisko").getText();
+        String pesel = polaStudent.get("pesel").getText();
+        int wiek = Integer.parseInt(polaStudent.get("wiek").getText());
+        char plec = polaStudent.get("plec").getText().charAt(0);
+        String ID = polaStudent.get("ID").getText();
+        int rok = Integer.parseInt(polaStudent.get("rok").getText());
+        boolean erasmus = (checksStudent.get("erasmus").isSelected());
+        boolean stopien = (checksStudent.get("stopien").isSelected());
+        boolean stacjonarne = (checksStudent.get("stacjonarne").isSelected());
+        Student student = new Student(imie, nazwisko, pesel, wiek, plec, ID, rok, erasmus, stopien, stacjonarne);
+        String[] courses = coursenames.getText().split(", ");
+        for (String s : courses){
+            for(Kurs k : Kurs.find(this.kursy, "name", s)){
+                student.addKurs(k);
             }
         }
+        ludzie.add(student);
+    }
+    public void addPracownikAdmin(HashMap<String, JTextField> polaPracownikA){
+        //System.out.println("1.Referent");
+        //System.out.println("2.Specjalista");
+        //System.out.println("3.Starszy Specjalista");
+        String imie = polaPracownikA.get("imie").getText();
+        String nazwisko = polaPracownikA.get("nazwisko").getText();
+        String pesel = polaPracownikA.get("pesel").getText();
+        int wiek = Integer.parseInt(polaPracownikA.get("wiek").getText());
+        char plec = polaPracownikA.get("plec").getText().charAt(0);
+        String stanowisko = polaPracownikA.get("stanowisko").getText();
+        int staz = Integer.parseInt(polaPracownikA.get("staz").getText());
+        int pensja = Integer.parseInt(polaPracownikA.get("pensja").getText());
+        int etat = Integer.parseInt(polaPracownikA.get("etat").getText());
 
-        System.out.println("Staz:");
-        int staz = scanner.nextInt();
-        System.out.println("pensja:");
-        int pensja = scanner.nextInt();
-        System.out.println("etat:");
-        int etat = scanner.nextInt();
-        System.out.println("nadgodziny:");
-        int nadgodziny = scanner.nextInt();
-        PracownikAdmin o = new PracownikAdmin(imie, nazwisko, pesel, wiek, plec, stanowisko, staz, pensja, etat, nadgodziny);
-
+        PracownikAdmin o = new PracownikAdmin(imie, nazwisko, pesel, wiek, plec, stanowisko, staz, pensja, etat, Integer.parseInt(polaPracownikA.get("nadgodziny").getText()));
         ludzie.add(o);
     }
-    public void addPracownikBD(String imie, String nazwisko, String pesel, int wiek, char plec){
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Stanowisko:");
-        String stanowisko = "";
+    public void addPracownikBD(HashMap<String, JTextField> polaPracownikBD){
         System.out.println("1.Asystent");
         System.out.println("2.Adiunkt");
         System.out.println("3.Wykładowca");
         System.out.println("4.Profesor Zwyczajny");
         System.out.println("5.Profesor Nadzwyczajny");
-        switch (scanner.nextLine().charAt(0)) {
-            case '1': {
-                stanowisko = "Asystent";
-                break;
-            }
-            case '2': {
-                stanowisko = "Adiunkt";
-                break;
-            }
-            case '3': {
-                stanowisko = "Wykładowca";
-                break;
-            }
-            case '4': {
-                stanowisko = "Profesor Zwyczajny";
-                break;
-            }
-            case '5': {
-                stanowisko = "Profesor Nadzwyczajny";
-                break;
-            }
-        }
 
-        System.out.println("Staz:");
-        int staz = scanner.nextInt();
-        System.out.println("pensja:");
-        int pensja = scanner.nextInt();
-        System.out.println("etat:");
-        int etat = scanner.nextInt();
-        System.out.println("publikacje:");
-        int publikacje = scanner.nextInt();
-        PracownikBD o = new PracownikBD(imie, nazwisko, pesel, wiek, plec, stanowisko, staz, pensja, etat,  publikacje);
+        String imie = polaPracownikBD.get("imie").getText();
+        String nazwisko = polaPracownikBD.get("nazwisko").getText();
+        String pesel = polaPracownikBD.get("pesel").getText();
+        int wiek = Integer.parseInt(polaPracownikBD.get("wiek").getText());
+        char plec = polaPracownikBD.get("plec").getText().charAt(0);
+        String stanowisko = polaPracownikBD.get("stanowisko").getText();
+        int staz = Integer.parseInt(polaPracownikBD.get("staz").getText());
+        int pensja = Integer.parseInt(polaPracownikBD.get("pensja").getText());
+        int etat = Integer.parseInt(polaPracownikBD.get("etat").getText());
+
+        PracownikBD o = new PracownikBD(imie, nazwisko, pesel, wiek, plec, stanowisko, staz, pensja, etat,  Integer.parseInt(polaPracownikBD.get("publikacje").getText()));
 
         ludzie.add(o);
     }
     public void addKurs(HashMap<String, JTextField> polaKurs){
         Scanner scanner = new Scanner(System.in);
         String nazwisko = polaKurs.get("prowadzący").getText();
-        if(PracownikUczelni.szukajNazwisko(ludzie,nazwisko).size()==0){
+        if(PracownikUczelni.find(ludzie,"surname", nazwisko).size()==0){
             System.out.println("nie znaleziono prowadzącego, spróbuj ponownie");
         }
         else {
             String nazwa = polaKurs.get("nazwa").getText();
-            PracownikBD prowadzacy = (PracownikBD) PracownikUczelni.szukajNazwisko(ludzie, nazwisko).get(0);
+            PracownikBD prowadzacy = (PracownikBD) PracownikUczelni.find(ludzie,"surname", nazwisko).get(0);
             int ECTS = Integer.parseInt(polaKurs.get("ECTS").getText());
             kursy.add(new Kurs(nazwa, prowadzacy, ECTS));
         }
@@ -383,7 +267,7 @@ public class SystemAdministracji{
                         Student student = new Student(line[1], line[2], line[3], Integer.parseInt(line[4]), line[5].charAt(0), line[6], Integer.parseInt(line[7]), Boolean.parseBoolean(line[8]), Boolean.parseBoolean(line[9]), Boolean.parseBoolean(line[10]));
                         String[] listaKursow = line[11].split("_");
                         for (String nazwa : listaKursow) {
-                            if (Kurs.szukajNazwa(kursy,nazwa).size()!=0) student.addKurs(Kurs.szukajNazwa(kursy,nazwa).get(0));
+                            if (Kurs.find(kursy,"name",nazwa).size()!=0) student.addKurs(Kurs.find(kursy,"name",nazwa).get(0));
                         }
                         this.ludzie.add(student);
                         break;
@@ -450,29 +334,11 @@ public class SystemAdministracji{
     public void setAdmin(Admin admin) {
         this.admin = admin;
     }
-    public String getPathLudzie() {
-        return pathLudzie;
-    }
-    public void setPathLudzie(String pathLudzie) {
-        this.pathLudzie = pathLudzie;
-    }
-    public String getPathKursy() {
-        return pathKursy;
-    }
-    public void setPathKursy(String pathKursy) {
-        this.pathKursy = pathKursy;
-    }
-    public List<Kurs> getKursy() {
+    public ArrayList<Kurs> getKursy() {
         return kursy;
     }
-    public void setKursy(List<Kurs> kursy) {
-        this.kursy = kursy;
-    }
-    public List<Osoba> getLudzie() {
+    public ArrayList<Osoba> getLudzie() {
         return ludzie;
-    }
-    public void setLudzie(List<Osoba> ludzie) {
-        this.ludzie = ludzie;
     }
 
     public void notifyAdmins(){

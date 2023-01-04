@@ -14,11 +14,11 @@ import java.util.HashMap;
 
 public class GUISort implements ActionListener, ItemListener {
     SystemAdministracji system;
-    JFrame frame = new JFrame();
     JPanel cards = new JPanel(new CardLayout());
     HashMap<JButton, String> buttons = new HashMap<JButton, String>();
     public void main(SystemAdministracji system){
         this.system = system;
+        JFrame frame = new JFrame();
         //wybór co sortować
         JPanel panelChoice = new JPanel();
         JComboBox comboBox = new JComboBox(new String[]{"sortuj kursy", "sortuj ludzi"});
@@ -53,7 +53,7 @@ public class GUISort implements ActionListener, ItemListener {
         //frame
         frame.add(panelChoice, BorderLayout.PAGE_START);
         frame.add(cards, BorderLayout.CENTER);
-        frame.setSize(500,300);
+        frame.setSize(500,150);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setVisible(true);
     }
@@ -81,5 +81,6 @@ public class GUISort implements ActionListener, ItemListener {
                 break;
             }
         }
+        system.getAdmin().update();
     }
 }

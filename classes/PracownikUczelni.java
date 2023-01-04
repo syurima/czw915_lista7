@@ -62,38 +62,38 @@ abstract public class PracownikUczelni extends Osoba{
     public String serialize() {
         return (super.serialize()+ String.format("/%s/%d/%d/%d",this.getStanowisko(),this.getStaz(),this.getPensja(),this.getEtat()));
     }
-    public static List<Osoba> szukajNazwisko(List<Osoba> ludzie, String nazwisko){
-        List<Osoba> output = new ArrayList<Osoba>();
-        for(Osoba o : ludzie){
-            if(o instanceof PracownikUczelni && o.getNazwisko().equals(nazwisko)) output.add(o);
-        }
-        return output;
-    }
-    public static List<Osoba> szukajImie(List<Osoba> ludzie, String imie){
-        List<Osoba> output = new ArrayList<Osoba>();
-        for(Osoba o : ludzie){
-            if(o instanceof PracownikUczelni && o.getImie().equals(imie)) output.add(o);
-        }
-        return output;
-    }
-    public static List<Osoba> szukajStanowisko(List<Osoba> ludzie, String stanowisko){
-        List<Osoba> output = new ArrayList<Osoba>();
-        for(Osoba o : ludzie){
-            if(o instanceof PracownikUczelni && ((PracownikUczelni) o).getStanowisko().equals(stanowisko)) output.add(o);
-        }
-        return output;
-    }
-    public static List<Osoba> szukajStaz(List<Osoba> ludzie, int staz){
-        List<Osoba> output = new ArrayList<Osoba>();
-        for(Osoba o : ludzie){
-            if(o instanceof PracownikUczelni && ((PracownikUczelni) o).getStaz()==staz) output.add(o);
-        }
-        return output;
-    }
-    public static List<Osoba> szukajPensja(List<Osoba> ludzie, int pensja){
-        List<Osoba> output = new ArrayList<Osoba>();
-        for(Osoba o : ludzie){
-            if(o instanceof PracownikUczelni && ((PracownikUczelni) o).getPensja()==pensja) output.add(o);
+    public static ArrayList<Osoba> find(List<Osoba> ludzie, String key, String szukane){
+        ArrayList<Osoba> output = new ArrayList<Osoba>();
+        switch (key) {
+            case "surname": {
+                for(Osoba o : ludzie){
+                    if(o instanceof PracownikUczelni && o.getNazwisko().equals(szukane)) output.add(o);
+                }
+                break;
+            }
+            case "name": {
+                for(Osoba o : ludzie){
+                    if(o instanceof PracownikUczelni && o.getImie().equals(szukane)) output.add(o);
+                }
+                break;
+            }
+            case "job": {
+                for(Osoba o : ludzie){
+                    if(o instanceof PracownikUczelni && ((PracownikUczelni) o).getStanowisko().equals(szukane)) output.add(o);
+                }
+                break;
+            }
+            case "year": {
+                for(Osoba o : ludzie){
+                    if(o instanceof PracownikUczelni && ((PracownikUczelni) o).getStaz()==Integer.parseInt(szukane)) output.add(o);
+                }
+                break;
+            }
+            case "salary": {
+                for(Osoba o : ludzie){
+                    if(o instanceof PracownikUczelni && ((PracownikUczelni) o).getPensja()==Integer.parseInt(szukane)) output.add(o);
+                }
+            }
         }
         return output;
     }
