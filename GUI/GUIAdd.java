@@ -158,17 +158,14 @@ public class GUIAdd implements ActionListener, ItemListener{
     public void actionPerformed(ActionEvent event){
         switch (buttons.get(event.getSource())){
             case "student":{
-                System.out.println("s");
                 system.addStudent(polaStudent, checksStudent, coursenames);
                 break;
             }
             case "pracownikBD":{
-                System.out.println("bd");
                 system.addPracownikBD(polaPracownikBD);
                 break;
             }
             case "pracownikA":{
-                System.out.println("a");
                 system.addPracownikAdmin(polaPracownikA);
                 break;
             }

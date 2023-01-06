@@ -1,5 +1,9 @@
 package classes;
 
+import GUI.GUI;
+
+import javax.swing.*;
+
 public class Admin {
     SystemAdministracji system;
     boolean op;
@@ -16,7 +20,6 @@ public class Admin {
     public void update() {
         system.wypiszLudziPlik();
         system.wypiszKursyPlik();
-        System.out.println("dane zapisane");
-
+        GUI.update();
     }
 }

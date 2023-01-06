@@ -29,6 +29,13 @@ public class GUI implements ActionListener {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
     }
+    public static void update(){
+        JFrame frame = new JFrame();
+        frame.add(new JButton("dane zapisane"));
+        frame.setSize(200,100);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setVisible(true);
+    }
     public void actionPerformed(ActionEvent event){
         switch (buttons.get(event.getSource())){
             case "add":{
