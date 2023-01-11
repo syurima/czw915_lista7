@@ -202,16 +202,12 @@ public class SystemAdministracji{
         }
         ludzie.add(student);
     }
-    public void addPracownikAdmin(HashMap<String, JTextField> polaPracownikA){
-        //System.out.println("1.Referent");
-        //System.out.println("2.Specjalista");
-        //System.out.println("3.Starszy Specjalista");
+    public void addPracownikAdmin(HashMap<String, JTextField> polaPracownikA, String stanowisko){
         String imie = polaPracownikA.get("imie").getText();
         String nazwisko = polaPracownikA.get("nazwisko").getText();
         String pesel = polaPracownikA.get("pesel").getText();
         int wiek = Integer.parseInt(polaPracownikA.get("wiek").getText());
         char plec = polaPracownikA.get("plec").getText().charAt(0);
-        String stanowisko = polaPracownikA.get("stanowisko").getText();
         int staz = Integer.parseInt(polaPracownikA.get("staz").getText());
         int pensja = Integer.parseInt(polaPracownikA.get("pensja").getText());
         int etat = Integer.parseInt(polaPracownikA.get("etat").getText());
@@ -219,19 +215,12 @@ public class SystemAdministracji{
         PracownikAdmin o = new PracownikAdmin(imie, nazwisko, pesel, wiek, plec, stanowisko, staz, pensja, etat, Integer.parseInt(polaPracownikA.get("nadgodziny").getText()));
         ludzie.add(o);
     }
-    public void addPracownikBD(HashMap<String, JTextField> polaPracownikBD){
-        System.out.println("1.Asystent");
-        System.out.println("2.Adiunkt");
-        System.out.println("3.Wykładowca");
-        System.out.println("4.Profesor Zwyczajny");
-        System.out.println("5.Profesor Nadzwyczajny");
-
+    public void addPracownikBD(HashMap<String, JTextField> polaPracownikBD, String stanowisko){
         String imie = polaPracownikBD.get("imie").getText();
         String nazwisko = polaPracownikBD.get("nazwisko").getText();
         String pesel = polaPracownikBD.get("pesel").getText();
         int wiek = Integer.parseInt(polaPracownikBD.get("wiek").getText());
         char plec = polaPracownikBD.get("plec").getText().charAt(0);
-        String stanowisko = polaPracownikBD.get("stanowisko").getText();
         int staz = Integer.parseInt(polaPracownikBD.get("staz").getText());
         int pensja = Integer.parseInt(polaPracownikBD.get("pensja").getText());
         int etat = Integer.parseInt(polaPracownikBD.get("etat").getText());
@@ -243,7 +232,6 @@ public class SystemAdministracji{
     public void addKurs(HashMap<String, JTextField> polaKurs){
         Scanner scanner = new Scanner(System.in);
         String nazwisko = polaKurs.get("prowadzący").getText();
-
         String nazwa = polaKurs.get("nazwa").getText();
         PracownikBD prowadzacy = (PracownikBD) PracownikUczelni.find(ludzie,"surname", nazwisko).get(0);
         int ECTS = Integer.parseInt(polaKurs.get("ECTS").getText());

@@ -25,7 +25,10 @@ public class GUIAdd implements ActionListener, ItemListener{
     JTextField coursenames = new JTextField();
     static HashMap<String, JCheckBox> checksStudent = new HashMap<String, JCheckBox>();
     static HashMap<String, JTextField> polaPracownikBD = new HashMap<String, JTextField>();
+    JComboBox stanowiskoBD = new JComboBox(new String[]{"Asystent", "Adiunkt", "Wykładowca", "Profesor Zwyczajny", "Profesor Nadzwyczajny" });
     static HashMap<String, JTextField> polaPracownikA = new HashMap<String, JTextField>();
+    JComboBox stanowiskoAdmin = new JComboBox(new String[]{"Referent", "Specjalista", "Starszy Specjalista" });
+
     SystemAdministracji system;
     public void main(SystemAdministracji system){
         this.system = system;
@@ -98,13 +101,12 @@ public class GUIAdd implements ActionListener, ItemListener{
         //panel dla pracownika bd
         {
             JPanel panelPracownikBD = new JPanel();
-            JPanel panelPBD = new JPanel(new GridLayout(2, 4));
-            polaPracownikBD.put("imie", new JTextField("imię"));
+            JPanel panelPBD = new JPanel(new GridLayout(4, 4));
+            polaPracownikBD.put("imie", new JTextField("imię", 15));
             polaPracownikBD.put("nazwisko", new JTextField("nazwisko"));
             polaPracownikBD.put("pesel", new JTextField("pesel"));
             polaPracownikBD.put("wiek", new JTextField("wiek"));
             polaPracownikBD.put("plec", new JTextField("płeć"));
-            polaPracownikBD.put("stanowisko", new JTextField("stanowisko"));
             polaPracownikBD.put("staz", new JTextField("staz"));
             polaPracownikBD.put("etat", new JTextField("etat"));
             polaPracownikBD.put("pensja", new JTextField("pensja"));
@@ -112,6 +114,7 @@ public class GUIAdd implements ActionListener, ItemListener{
             for (JTextField T : polaPracownikBD.values()) {
                 panelPBD.add(T);
             }
+            panelPBD.add(stanowiskoBD);
             JButton enterPBD = new JButton("dodaj");
             buttons.put(enterPBD, "pracownikBD");
             enterPBD.addActionListener(this);
@@ -122,13 +125,12 @@ public class GUIAdd implements ActionListener, ItemListener{
         //panel dla pracownika admin
         {
             JPanel panelPracownikA = new JPanel();
-            JPanel panelPA = new JPanel(new GridLayout(2, 4));
-            polaPracownikA.put("imie", new JTextField("imię"));
+            JPanel panelPA = new JPanel(new GridLayout(4, 4));
+            polaPracownikA.put("imie", new JTextField("imię", 15));
             polaPracownikA.put("nazwisko", new JTextField("nazwisko"));
             polaPracownikA.put("pesel", new JTextField("pesel"));
             polaPracownikA.put("wiek", new JTextField("wiek"));
             polaPracownikA.put("plec", new JTextField("płeć"));
-            polaPracownikA.put("stanowisko", new JTextField("stanowisko"));
             polaPracownikA.put("staz", new JTextField("staz"));
             polaPracownikA.put("etat", new JTextField("etat"));
             polaPracownikA.put("pensja", new JTextField("pensja"));
@@ -136,6 +138,7 @@ public class GUIAdd implements ActionListener, ItemListener{
             for (JTextField T : polaPracownikA.values()) {
                 panelPA.add(T);
             }
+            panelPA.add(stanowiskoAdmin);
             JButton enterA = new JButton("dodaj");
             buttons.put(enterA, "pracownikA");
 
@@ -147,7 +150,7 @@ public class GUIAdd implements ActionListener, ItemListener{
         //---
         frame.add(panelChoice, BorderLayout.PAGE_START);
         frame.add(cards, BorderLayout.CENTER);
-        frame.setSize(500,200);
+        frame.setSize(540,230);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setVisible(true);
     }
@@ -170,11 +173,11 @@ public class GUIAdd implements ActionListener, ItemListener{
                     break;
                 }
                 case "pracownikBD": {
-                    system.addPracownikBD(polaPracownikBD);
+                    system.addPracownikBD(polaPracownikBD, stanowiskoBD.getSelectedItem().toString());
                     break;
                 }
                 case "pracownikA": {
-                    system.addPracownikAdmin(polaPracownikA);
+                    system.addPracownikAdmin(polaPracownikA, stanowiskoAdmin.getSelectedItem().toString());
                     break;
                 }
                 case "kurs": {
