@@ -1,6 +1,6 @@
 package classes;
 
-import GUI.GUI;
+import GUI.*;
 import comparators.*;
 
 import javax.swing.*;
@@ -243,15 +243,11 @@ public class SystemAdministracji{
     public void addKurs(HashMap<String, JTextField> polaKurs){
         Scanner scanner = new Scanner(System.in);
         String nazwisko = polaKurs.get("prowadzący").getText();
-        if(PracownikUczelni.find(ludzie,"surname", nazwisko).size()==0){
-            System.out.println("nie znaleziono prowadzącego, spróbuj ponownie");
-        }
-        else {
-            String nazwa = polaKurs.get("nazwa").getText();
-            PracownikBD prowadzacy = (PracownikBD) PracownikUczelni.find(ludzie,"surname", nazwisko).get(0);
-            int ECTS = Integer.parseInt(polaKurs.get("ECTS").getText());
-            kursy.add(new Kurs(nazwa, prowadzacy, ECTS));
-        }
+
+        String nazwa = polaKurs.get("nazwa").getText();
+        PracownikBD prowadzacy = (PracownikBD) PracownikUczelni.find(ludzie,"surname", nazwisko).get(0);
+        int ECTS = Integer.parseInt(polaKurs.get("ECTS").getText());
+        kursy.add(new Kurs(nazwa, prowadzacy, ECTS));
     }
     public void wczytajLudziPlik(){
         File input = new File(pathLudzie);

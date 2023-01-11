@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.io.IOException;
 import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,7 +22,7 @@ public class GUIAdd implements ActionListener, ItemListener{
     static HashMap<JButton, String> buttons = new HashMap<JButton, String>();
     static HashMap<String, JTextField> polaKurs = new HashMap<String, JTextField>();
     static HashMap<String, JTextField> polaStudent = new HashMap<String, JTextField>();
-    JTextField coursenames;
+    JTextField coursenames = new JTextField();
     static HashMap<String, JCheckBox> checksStudent = new HashMap<String, JCheckBox>();
     static HashMap<String, JTextField> polaPracownikBD = new HashMap<String, JTextField>();
     static HashMap<String, JTextField> polaPracownikA = new HashMap<String, JTextField>();
@@ -150,31 +151,45 @@ public class GUIAdd implements ActionListener, ItemListener{
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setVisible(true);
     }
-
+    public static void  error(){
+        JFrame frame = new JFrame();
+        frame.add(new JButton("dane niepoprawne :("));
+        frame.setSize(200,100);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setVisible(true);
+    }
     public void itemStateChanged(ItemEvent event) {
         CardLayout card = (CardLayout)(cards.getLayout());
         card.show(cards, (String)event.getItem());
     }
     public void actionPerformed(ActionEvent event){
-        switch (buttons.get(event.getSource())){
-            case "student":{
-                system.addStudent(polaStudent, checksStudent, coursenames);
-                break;
+        try {
+            switch (buttons.get(event.getSource())) {
+                case "student": {
+                    system.addStudent(polaStudent, checksStudent, coursenames);
+                    break;
+                }
+                case "pracownikBD": {
+                    system.addPracownikBD(polaPracownikBD);
+                    break;
+                }
+                case "pracownikA": {
+                    system.addPracownikAdmin(polaPracownikA);
+                    break;
+                }
+                case "kurs": {
+                    system.addKurs(polaKurs);
+                    break;
+                }
             }
-            case "pracownikBD":{
-                system.addPracownikBD(polaPracownikBD);
-                break;
-            }
-            case "pracownikA":{
-                system.addPracownikAdmin(polaPracownikA);
-                break;
-            }
-            case "kurs":{
-                system.addKurs(polaKurs);
-                break;
-            }
+            system.getAdmin().update();
+            system.notifyAdmins();
         }
-        system.getAdmin().update();
-        system.notifyAdmins();
+        catch (NumberFormatException exception){
+            error();
+        }
+        catch (IndexOutOfBoundsException exception){
+            error();
+        }
     }
 }
