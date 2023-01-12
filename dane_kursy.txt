@@ -1,8 +1,8 @@
 fizyka/D/Frank/Podłoga/ff/54/M/Wykładowca/17/60/2/45/2
 polski/D/Lidia/Schmidt/83844859375/45/K/Profesor Nadzwyczajny/14/54/1/4/2
+filozofia/D/Krzysztof/Materac/14855229620/38/M/Asystent/7/40/1/2/4
 psio/D/Frank/Podłoga/ff/54/M/Wykładowca/17/60/2/45/4
 testkurs/D/Krzysztof/Materac/14855229620/38/M/Asystent/7/40/2/3/5
+nazwa/D/Krzysztof/Materac/14855229620/38/M/Asystent/7/40/1/2/5
 grafika/D/Lidia/Schmidt/83844859375/45/K/Profesor Nadzwyczajny/14/54/1/4/5
 rd/D/Krzysztof/Materac/14855229620/38/M/Asystent/7/40/2/3/6
-filozofia/D/Krzysztof/Materac/14855229620/38/M/Asystent/7/40/1/2/4
-nazwa/D/Krzysztof/Materac/14855229620/38/M/Asystent/7/40/1/2/5

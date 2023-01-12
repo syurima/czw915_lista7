@@ -102,7 +102,7 @@ public class GUIAdd implements ActionListener, ItemListener{
         {
             JPanel panelPracownikBD = new JPanel();
             JPanel panelPBD = new JPanel(new GridLayout(4, 4));
-            polaPracownikBD.put("imie", new JTextField("imię", 15));
+            polaPracownikBD.put("imie", new JTextField("imię", 16));
             polaPracownikBD.put("nazwisko", new JTextField("nazwisko"));
             polaPracownikBD.put("pesel", new JTextField("pesel"));
             polaPracownikBD.put("wiek", new JTextField("wiek"));
@@ -126,7 +126,7 @@ public class GUIAdd implements ActionListener, ItemListener{
         {
             JPanel panelPracownikA = new JPanel();
             JPanel panelPA = new JPanel(new GridLayout(4, 4));
-            polaPracownikA.put("imie", new JTextField("imię", 15));
+            polaPracownikA.put("imie", new JTextField("imię", 16));
             polaPracownikA.put("nazwisko", new JTextField("nazwisko"));
             polaPracownikA.put("pesel", new JTextField("pesel"));
             polaPracownikA.put("wiek", new JTextField("wiek"));
@@ -150,7 +150,7 @@ public class GUIAdd implements ActionListener, ItemListener{
         //---
         frame.add(panelChoice, BorderLayout.PAGE_START);
         frame.add(cards, BorderLayout.CENTER);
-        frame.setSize(540,230);
+        frame.setSize(530,220);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setVisible(true);
     }

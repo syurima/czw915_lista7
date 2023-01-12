@@ -74,9 +74,9 @@ public class GUISearch implements ActionListener, ItemListener {
         panelconstant.add(del, BorderLayout.AFTER_LAST_LINE);
         //frame
         frame.add(panelChoice, BorderLayout.PAGE_START);
-        frame.add(cards, BorderLayout.CENTER);
-        frame.add(panelconstant, BorderLayout.SOUTH);
-        frame.setSize(500,150);
+        frame.add(panelconstant, BorderLayout.CENTER);
+        frame.add(cards, BorderLayout.SOUTH);
+        frame.setSize(500,140);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setVisible(true);
     }

@@ -1,14 +1,9 @@
 S/Anna/2/22223239020/13/F/280639/2/true/true/false/_fizyka_
-S/Aleks/A/34944958364/19/X/309323/1/false/true/true/_rd_
 A/Wilhelm/Admilinstrator/76455287020/60/K/Referent/5/3000/1/14
 D/Albert/Autobus/90094873789/54/M/Adiunkt/5/60/1/3
-S/Vleks/B/34944958364/19/X/309323/1/false/true/true/_rd_
 A/Brunon/Blok/30812830/19/M/Starszy Specjalista/5/0/3/100
-S/Vleks/D/34944958364/19/X/309323/1/false/true/true/_rd_
-S/Maria/D/34944958364/15/X/309323/1/false/true/true/_rd_
 S/phil/eee/29388475098/39/M/090909/3/true/false/true/_rd_
 S/phil/eee/29388475098/38/M/090909/3/true/false/true/_rd_
-S/Jan/Kowalski/02038478938/21/M/273806/1/false/true/true/_rd_
 D/Krzysztof/Materac/14855229620/38/M/Asystent/7/40/1/2
 S/imię/nazwisko/pesel/5/p/ID/5/false/true/false/_fizyka_rd_
 A/Krzyzsztof/Nowak/3875897/34/M/Referent/9/30/3/4

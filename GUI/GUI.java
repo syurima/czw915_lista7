@@ -17,14 +17,14 @@ public class GUI implements ActionListener {
 
         buttons.put(new JButton("dodaj"),"add");
         buttons.put(new JButton("wypisz"),"print");
-        buttons.put(new JButton("szukaj"),"search");
+        buttons.put(new JButton("szukaj i usuń"),"search");
         buttons.put(new JButton("sort"),"sort");
         JPanel menu = new JPanel(new GridLayout());
         for(JButton B: buttons.keySet()){
             B.addActionListener(this);
             menu.add(B);
         }
-        frame.setSize(400,80);
+        frame.setSize(500,80);
         frame.add(menu, BorderLayout.CENTER);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
