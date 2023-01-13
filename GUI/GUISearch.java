@@ -91,67 +91,67 @@ public class GUISearch implements ActionListener, ItemListener {
         switch (buttons.get(event.getSource())){
             case "ECTS":{
                 foundCourses = Kurs.find(system.getKursy(),"ECTS", input.getText());
-                Kurs.wypiszKursy(foundCourses);
+                GUIPrint.wypiszKursy(foundCourses);
                 break;
             }
             case "prowadzący":{
                 foundCourses = Kurs.find(system.getKursy(),"teacher", input.getText());
-                Kurs.wypiszKursy(foundCourses);
+                GUIPrint.wypiszKursy(foundCourses);
                 break;
             }
             case "nazwa":{
                 foundCourses = Kurs.find(system.getKursy(),"name", input.getText());
-                Kurs.wypiszKursy(foundCourses);
+                GUIPrint.wypiszKursy(foundCourses);
                 break;
             }
             case "studentNazwisko":{
                 foundPeople = Student.find(system.getLudzie(), system.getKursy(), "surname", input.getText());
-                Student.wypiszStudentow(foundPeople);
+                GUIPrint.wypiszStudentow(foundPeople);
                 break;
             }
             case "studentImię":{
                 foundPeople = Student.find(system.getLudzie(), system.getKursy(),"name", input.getText());
-                Student.wypiszStudentow(foundPeople);
+                GUIPrint.wypiszStudentow(foundPeople);
                 break;
             }
             case "ID":{
                 foundPeople = Student.find(system.getLudzie(), system.getKursy(), "ID", input.getText());
-                Student.wypiszStudentow(foundPeople);
+                GUIPrint.wypiszStudentow(foundPeople);
                 break;
             }
             case "rok":{
                 foundPeople = Student.find(system.getLudzie(), system.getKursy(), "year", input.getText());
-                Student.wypiszStudentow(foundPeople);
+                GUIPrint.wypiszStudentow(foundPeople);
                 break;
             }
             case "kurs":{
                 foundPeople = Student.find(system.getLudzie(), system.getKursy(), "course", input.getText());
-                Student.wypiszStudentow(foundPeople);
+                GUIPrint.wypiszStudentow(foundPeople);
                 break;
             }
             case "pracNazwisko":{
                 foundPeople = PracownikUczelni.find(system.getLudzie(), "surname", input.getText());
-                PracownikUczelni.wypiszPracowników(foundPeople);
+                GUIPrint.wypiszPracowników(foundPeople);
                 break;
             }
             case "pracImię":{
                 foundPeople = PracownikUczelni.find(system.getLudzie(),"name", input.getText());
-                PracownikUczelni.wypiszPracowników(foundPeople);
+                GUIPrint.wypiszPracowników(foundPeople);
                 break;
             }
             case "stanowisko":{
                 foundPeople = PracownikUczelni.find(system.getLudzie(),"job",  input.getText());
-                PracownikUczelni.wypiszPracowników(foundPeople);
+                GUIPrint.wypiszPracowników(foundPeople);
                 break;
             }
             case "staz":{
                 foundPeople = PracownikUczelni.find(system.getLudzie(), "year", input.getText());
-                PracownikUczelni.wypiszPracowników(foundPeople);
+                GUIPrint.wypiszPracowników(foundPeople);
                 break;
             }
             case "pensja":{
                 foundPeople = PracownikUczelni.find(system.getLudzie(), "salary", input.getText());
-                PracownikUczelni.wypiszPracowników(foundPeople);
+                GUIPrint.wypiszPracowników(foundPeople);
                 break;
             }
         }

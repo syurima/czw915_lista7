@@ -73,16 +73,5 @@ public class Kurs{
         }
         return output;
     }
-    public static void wypiszKursy(List<Kurs> kursy){
-        JFrame frame = new JFrame("znalezione kursy");
-        JTextArea textArea = new JTextArea();
-        frame.getContentPane().add(new JScrollPane(textArea), BorderLayout.CENTER);
-        frame.setSize(400,300);
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setVisible(true);
-        for(Kurs k : kursy){
-            textArea.append(k.toString() + "\n");;
-        }
-    }
 
 }

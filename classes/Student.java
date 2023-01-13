@@ -1,12 +1,10 @@
 package classes;
 
-import javax.swing.*;
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Student extends Osoba {
-    private String nrIndeksu;
+    private String ID;
     private int rokStudiow;
     private boolean erasmus;
     private boolean stopien1; //stopien2 - false
@@ -14,17 +12,17 @@ public class Student extends Osoba {
     private List<Kurs> kursy;
 
     public Student(String imie, String nazwisko, String pesel, int wiek, char plec, String ID, String rok, boolean erasmus, boolean stopien1, boolean stacja) {
-        this.nrIndeksu = "0";
+        this.ID = "0";
         this.rokStudiow = 0;
         this.kursy = new ArrayList<Kurs>();
         this.erasmus = false;
         this.stopien1 = true;
         this.stacjonarny = true;
     }
-    public Student(String imie, String nazwisko, String pesel, int wiek, char plec, String nrIndeksu, int rokStudiow, boolean erasmus, boolean stopien1, boolean stacjonarny) {
+    public Student(String imie, String nazwisko, String pesel, int wiek, char plec, String ID, int rokStudiow, boolean erasmus, boolean stopien1, boolean stacjonarny) {
         super(imie, nazwisko, pesel, wiek, plec);
         this.kursy = new ArrayList<Kurs>();
-        this.nrIndeksu = nrIndeksu;
+        this.ID = ID;
         this.rokStudiow = rokStudiow;
         this.kursy = new ArrayList<Kurs>();
         this.erasmus = erasmus;
@@ -32,11 +30,11 @@ public class Student extends Osoba {
         this.stacjonarny = stacjonarny;
     }
 
-    public String getNrIndeksu() {
-        return nrIndeksu;
+    public String getID() {
+        return ID;
     }
-    public void setNrIndeksu(String nrIndeksu) {
-        this.nrIndeksu = nrIndeksu;
+    public void setID(String ID) {
+        this.ID = ID;
     }
 
     public int getRokStudiow() {
@@ -55,27 +53,6 @@ public class Student extends Osoba {
     public void addKurs(Kurs k) {
         this.kursy.add(k);
     }
-    public boolean isErasmus() {
-        return erasmus;
-    }
-    public void setErasmus(boolean erasmus) {
-        this.erasmus = erasmus;
-    }
-
-    public boolean isStopien1() {
-        return stopien1;
-    }
-    public void setStopien1(boolean stopien1) {
-        this.stopien1 = stopien1;
-    }
-
-    public boolean isStacjonarny() {
-        return stacjonarny;
-    }
-    public void setStacjonarny(boolean stacjonarny) {
-        this.stacjonarny = stacjonarny;
-    }
-
     public boolean equals(Osoba o) {
         return super.equals(o);
     }
@@ -84,14 +61,14 @@ public class Student extends Osoba {
         for (Kurs k : this.kursy){
             kursy = kursy + k.getNazwa() + ", ";
         }
-        return ("student | " + super.toString() + "Indeks: " + nrIndeksu + ", " + rokStudiow + " rok studiów | erasmus: " + erasmus + ", " + "I stopień: " + stopien1 + ", " + "stacjonarne: " + stacjonarny + " | kursy: " + kursy);
+        return ("student | " + super.toString() + "Indeks: " + ID + ", " + rokStudiow + " rok studiów | erasmus: " + erasmus + ", " + "I stopień: " + stopien1 + ", " + "stacjonarne: " + stacjonarny + " | kursy: " + kursy);
     }
     public String serialize() {
         String a = "_";
         for (Kurs k : this.kursy){
             a = a + k.getNazwa() + "_";
         }
-        return ("S/" +  super.serialize() + String.format("/%s/%d/%s/%s/%s/%s",nrIndeksu,rokStudiow,erasmus,stopien1,stacjonarny,a));
+        return ("S/" +  super.serialize() + String.format("/%s/%d/%s/%s/%s/%s", ID,rokStudiow,erasmus,stopien1,stacjonarny,a));
     }
 
     public static ArrayList<Osoba> find(ArrayList<Osoba> ludzie, ArrayList<Kurs>kursy, String key, String szukane){
@@ -111,7 +88,7 @@ public class Student extends Osoba {
             }
             case "ID": {
                 for(Osoba o : ludzie){
-                    if(o instanceof Student && ((Student) o).getNrIndeksu().equals(szukane)) output.add(o);
+                    if(o instanceof Student && ((Student) o).getID().equals(szukane)) output.add(o);
                 }
                 break;
             }
@@ -134,17 +111,13 @@ public class Student extends Osoba {
         }
         return output;
     }
-    public static void wypiszStudentow(List<Osoba> ludzie){
-        JFrame frame = new JFrame("znalezieni studenci");
-        JTextArea textArea = new JTextArea();
-        frame.getContentPane().add(new JScrollPane(textArea), BorderLayout.CENTER);
-        frame.setSize(800,300);
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setVisible(true);
-        for(Osoba o : ludzie){
-            if(o instanceof Student) textArea.append(o.toString() + "\n");
-        }
-
+    public boolean equals(Object obj){
+        if (this.getClass() == obj.getClass() && this.ID.equals(((Student) obj).getID()))
+            return true;
+        return false;
+    }
+    public int hashCode(){
+        return this.getID().hashCode();
     }
 
 }

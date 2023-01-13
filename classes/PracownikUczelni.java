@@ -97,15 +97,12 @@ abstract public class PracownikUczelni extends Osoba{
         }
         return output;
     }
-    public static void wypiszPracowników(List<Osoba> ludzie){
-        JFrame frame = new JFrame("znalezieni pracownicy");
-        JTextArea textArea = new JTextArea();
-        frame.getContentPane().add(new JScrollPane(textArea), BorderLayout.CENTER);
-        frame.setSize(1000,300);
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setVisible(true);
-        for(Osoba o : ludzie){
-            if(o instanceof PracownikUczelni) textArea.append(o.toString() + "\n");
-        }
+    public boolean equals(Object obj){
+        if (this.getClass() == obj.getClass() && this.getPesel().equals(((PracownikUczelni) obj).getPesel()))
+            return true;
+        return false;
+    }
+    public int hashCode(){
+        return this.getPesel().hashCode();
     }
 }

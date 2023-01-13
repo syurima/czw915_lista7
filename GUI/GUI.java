@@ -19,12 +19,13 @@ public class GUI implements ActionListener {
         buttons.put(new JButton("wypisz"),"print");
         buttons.put(new JButton("szukaj i usuń"),"search");
         buttons.put(new JButton("sort"),"sort");
+        buttons.put(new JButton("wypisz bez duplikatów"),"nodupes");
         JPanel menu = new JPanel(new GridLayout());
         for(JButton B: buttons.keySet()){
             B.addActionListener(this);
             menu.add(B);
         }
-        frame.setSize(500,80);
+        frame.setSize(900,80);
         frame.add(menu, BorderLayout.CENTER);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
@@ -56,6 +57,11 @@ public class GUI implements ActionListener {
             case "sort":{
                 GUISort guiSort = new GUISort();
                 guiSort.main(system);
+                break;
+            }
+            case "nodupes":{
+                GUIPrintNoDupes guiPrintNoDupes = new GUIPrintNoDupes();
+                guiPrintNoDupes.main(system);
                 break;
             }
         }

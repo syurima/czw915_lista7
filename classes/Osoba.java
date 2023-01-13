@@ -56,9 +56,16 @@ abstract public class Osoba implements FunkcjeOsoba {
         return this.pesel.equals(o.getPesel());
     }
     public String toString(){
-        return String.format("%s %s wiek:%s plec:%s | ",imie,nazwisko,wiek,plec);
+        return String.format("%s %s wiek:%s plec:%s pesel:%s | ",imie,nazwisko,wiek,plec, pesel);
     }
     public String serialize() {
         return String.format("%s/%s/%s/%d/%s",imie,nazwisko,pesel,wiek,plec);
     }
+    /*
+    public int hashCode(){
+        if(this instanceof Student) return ((Student) this).getNrIndeksu().hashCode();
+        else return this.pesel.hashCode();
+    }
+
+     */
 }
